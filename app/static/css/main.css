@@ -1,0 +1,29 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: #fff;
+}
+
+nav {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+nav a {
+    font-weight: 600;
+    text-decoration: none;
+    color: inherit;
+}
+
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+}
