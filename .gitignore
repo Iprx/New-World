@@ -2,3 +2,14 @@ __pycache__/
 *.pyc
 .venv/
 .env
+dev.db
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+
+# Flutter/Dart
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/android/
+mobile/ios/
