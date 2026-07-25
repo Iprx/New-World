@@ -12,7 +12,7 @@ from app.routers import auth, discovery, matches, pages, swipes, users
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="New World")
+app = FastAPI(title="Mingla")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 

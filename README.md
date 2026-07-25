@@ -1,4 +1,4 @@
-# New World
+# Mingla
 
 A dating app MVP: swipe, match, and chat. FastAPI backend, Flutter client for iOS and Android.
 
@@ -42,7 +42,7 @@ This repo ships the Dart source (`mobile/lib/`) and `pubspec.yaml` only — the 
 
 ```bash
 cd mobile
-flutter create --org com.gridheart.newworld --project-name new_world .
+flutter create --org com.gridheart.mingla --project-name mingla .
 flutter pub get
 flutter run --dart-define=API_BASE_URL=http://localhost:8000
 ```

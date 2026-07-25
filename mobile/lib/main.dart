@@ -10,11 +10,11 @@ import 'services/matches_repository.dart';
 import 'services/profile_repository.dart';
 
 void main() {
-  runApp(const NewWorldApp());
+  runApp(const MinglaApp());
 }
 
-class NewWorldApp extends StatelessWidget {
-  const NewWorldApp({super.key});
+class MinglaApp extends StatelessWidget {
+  const MinglaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class NewWorldApp extends StatelessWidget {
         Provider(create: (_) => ProfileRepository(apiClient)),
       ],
       child: MaterialApp(
-        title: 'New World',
+        title: 'Mingla',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorSchemeSeed: Colors.pinkAccent,

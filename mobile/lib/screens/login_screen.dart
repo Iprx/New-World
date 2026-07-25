@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text('New World', style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
+                  Text('Mingla', style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
                   const SizedBox(height: 8),
                   Text('Find your people.', style: Theme.of(context).textTheme.bodyMedium, textAlign: TextAlign.center),
                   const SizedBox(height: 32),
