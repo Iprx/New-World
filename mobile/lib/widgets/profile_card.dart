@@ -35,7 +35,7 @@ class ProfileCard extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 stops: [0.5, 1],
-                colors: [Colors.transparent, Color(0xCC1A0E13)],
+                colors: [Colors.transparent, Color(0xCC1A1814)],
               ),
             ),
           ),
@@ -64,7 +64,7 @@ class ProfileCard extends StatelessWidget {
                     Text(
                       '${profile.age}',
                       style: const TextStyle(
-                        color: Color(0xFFEBD9DC),
+                        color: Color(0xFFDBD4C8),
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                       ),
@@ -77,7 +77,7 @@ class ProfileCard extends StatelessWidget {
                     profile.bio,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Color(0xFFF2E6E9), fontSize: 14, height: 1.35),
+                    style: const TextStyle(color: Color(0xFFEDE8DE), fontSize: 14, height: 1.35),
                   ),
                 ],
               ],
@@ -95,15 +95,9 @@ class _PlaceholderPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [MinglaColors.plum.withValues(alpha: 0.55), MinglaColors.coral.withValues(alpha: 0.55)],
-        ),
-      ),
-      child: const Center(
-        child: Icon(Icons.person_rounded, size: 96, color: Colors.white70),
+      decoration: const BoxDecoration(color: MinglaColors.lineLight),
+      child: Center(
+        child: Icon(Icons.person_rounded, size: 96, color: MinglaColors.mutedLight.withValues(alpha: 0.7)),
       ),
     );
   }

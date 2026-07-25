@@ -2,30 +2,27 @@ import 'package:flutter/material.dart';
 
 /// Mingla's design tokens and the light/dark [ThemeData] built from them.
 ///
-/// Colors are hand-picked rather than generated from a single seed so the
-/// palette reads as chosen: a warm coral for primary actions and matches,
-/// a muted plum for secondary emphasis, and warm (not pure white/black)
-/// neutrals throughout.
+/// Minimal & elegant: a near-monochrome ink/ivory palette carries almost
+/// everything (buttons, nav, focus states), with a single muted sage accent
+/// spent deliberately in a few places — the mark, the like button's heart,
+/// small interactive text — rather than spread across every control.
 class MinglaColors {
   MinglaColors._();
 
-  static const coral = Color(0xFFD6455A);
-  static const coralLight = Color(0xFFF0768A);
-  static const plum = Color(0xFF5B3A4B);
-  static const plumLight = Color(0xFFD8B4C4);
-  static const gold = Color(0xFFCF9A3E);
+  static const accent = Color(0xFF5B6B4C);
+  static const accentLight = Color(0xFF93A87F);
 
-  static const creamBackground = Color(0xFFFDF6F3);
-  static const creamSurface = Color(0xFFFFFFFF);
-  static const inkLight = Color(0xFF241B1F);
-  static const mutedLight = Color(0xFF7C6B70);
-  static const lineLight = Color(0xFFEBDFDD);
+  static const paper = Color(0xFFF7F4EF);
+  static const surfaceLight = Color(0xFFFFFFFF);
+  static const inkLight = Color(0xFF22201C);
+  static const mutedLight = Color(0xFF8D8577);
+  static const lineLight = Color(0xFFE3DED3);
 
-  static const nightBackground = Color(0xFF1C1417);
-  static const nightSurface = Color(0xFF261C20);
-  static const inkDark = Color(0xFFF5E9E7);
-  static const mutedDark = Color(0xFFB9A6AC);
-  static const lineDark = Color(0xFF3A2C31);
+  static const nightBackground = Color(0xFF1B1912);
+  static const nightSurface = Color(0xFF221F17);
+  static const inkDark = Color(0xFFECE7DD);
+  static const mutedDark = Color(0xFFA79E8E);
+  static const lineDark = Color(0xFF37342A);
 }
 
 class MinglaTheme {
@@ -34,45 +31,46 @@ class MinglaTheme {
   static TextTheme _textTheme(Color ink, Color muted) {
     // No bundled display face — weight, tracking, and size carry the
     // hierarchy on the platform's own system font (Roboto/SF), so both
-    // platforms render identically with no silent-fallback risk.
+    // platforms render identically with no silent-fallback risk. Open
+    // tracking and lighter weights (vs. a bold/tight display style) are
+    // what read as "elegant" rather than "loud" here.
     return TextTheme(
       headlineMedium: TextStyle(
-        fontSize: 32,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.5,
-        color: ink,
-        height: 1.15,
-      ),
-      headlineSmall: TextStyle(
-        fontSize: 26,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.3,
+        fontSize: 30,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.2,
         color: ink,
         height: 1.2,
       ),
+      headlineSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.1,
+        color: ink,
+        height: 1.25,
+      ),
       titleLarge: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.2,
+        fontSize: 19,
+        fontWeight: FontWeight.w600,
         color: ink,
       ),
       titleMedium: TextStyle(
         fontSize: 16,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         color: ink,
       ),
-      bodyLarge: TextStyle(fontSize: 16, color: ink, height: 1.4),
-      bodyMedium: TextStyle(fontSize: 14, color: ink, height: 1.45),
-      bodySmall: TextStyle(fontSize: 13, color: muted, height: 1.4),
+      bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ink, height: 1.5),
+      bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: ink, height: 1.5),
+      bodySmall: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: muted, height: 1.45),
       labelLarge: const TextStyle(
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: FontWeight.w600,
-        letterSpacing: 0.2,
+        letterSpacing: 0.4,
       ),
       labelSmall: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w600,
-        letterSpacing: 0.6,
+        letterSpacing: 0.8,
         color: muted,
       ),
     );
@@ -80,14 +78,14 @@ class MinglaTheme {
 
   static ThemeData light = _build(
     brightness: Brightness.light,
-    background: MinglaColors.creamBackground,
-    surface: MinglaColors.creamSurface,
+    background: MinglaColors.paper,
+    surface: MinglaColors.surfaceLight,
     ink: MinglaColors.inkLight,
     muted: MinglaColors.mutedLight,
     line: MinglaColors.lineLight,
-    primary: MinglaColors.coral,
-    onPrimary: Colors.white,
-    secondary: MinglaColors.plum,
+    primary: MinglaColors.inkLight,
+    onPrimary: MinglaColors.paper,
+    secondary: MinglaColors.accent,
     onSecondary: Colors.white,
   );
 
@@ -98,9 +96,9 @@ class MinglaTheme {
     ink: MinglaColors.inkDark,
     muted: MinglaColors.mutedDark,
     line: MinglaColors.lineDark,
-    primary: MinglaColors.coralLight,
+    primary: MinglaColors.inkDark,
     onPrimary: MinglaColors.nightBackground,
-    secondary: MinglaColors.plumLight,
+    secondary: MinglaColors.accentLight,
     onSecondary: MinglaColors.nightBackground,
   );
 
@@ -120,16 +118,17 @@ class MinglaTheme {
       brightness: brightness,
       primary: primary,
       onPrimary: onPrimary,
-      // A soft tint of primary over the surface — used for "my message"
-      // chat bubbles — rather than the full-strength accent, which would
-      // need white text and compete with the button/nav uses of primary.
-      primaryContainer: Color.alphaBlend(primary.withValues(alpha: 0.20), surface),
+      primaryContainer: Color.alphaBlend(primary.withValues(alpha: 0.10), surface),
       onPrimaryContainer: ink,
       secondary: secondary,
       onSecondary: onSecondary,
-      tertiary: MinglaColors.gold,
-      onTertiary: MinglaColors.inkLight,
-      error: const Color(0xFFBA1A1A),
+      // "My message" chat bubbles: a quiet sage tint rather than a solid
+      // fill, so the one accent color shows up softly instead of loudly.
+      secondaryContainer: Color.alphaBlend(secondary.withValues(alpha: 0.16), surface),
+      onSecondaryContainer: ink,
+      tertiary: secondary,
+      onTertiary: onSecondary,
+      error: const Color(0xFFA23B34),
       onError: Colors.white,
       surface: surface,
       onSurface: ink,
@@ -158,61 +157,71 @@ class MinglaTheme {
       ),
       cardTheme: CardThemeData(
         color: surface,
-        elevation: 2,
-        shadowColor: ink.withValues(alpha: 0.18),
+        elevation: 0,
+        shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: line),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(color: muted),
-        floatingLabelStyle: TextStyle(color: primary),
+        floatingLabelStyle: TextStyle(color: ink),
         helperStyle: TextStyle(color: muted, fontSize: 12),
         enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: line)),
         border: UnderlineInputBorder(borderSide: BorderSide(color: line)),
-        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primary, width: 2)),
+        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ink, width: 1.5)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: primary,
           foregroundColor: onPrimary,
-          minimumSize: const Size.fromHeight(52),
+          minimumSize: const Size.fromHeight(54),
           textStyle: textTheme.labelLarge,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: ink,
-          side: BorderSide(color: line, width: 1.5),
-          minimumSize: const Size.fromHeight(52),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          side: BorderSide(color: line, width: 1.2),
+          minimumSize: const Size.fromHeight(54),
+          textStyle: textTheme.labelLarge,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: primary, textStyle: textTheme.bodyMedium),
+        style: TextButton.styleFrom(foregroundColor: secondary, textStyle: textTheme.bodyMedium),
       ),
+      // No global IconButtonThemeData: it would apply to every plain
+      // IconButton (back arrows, the logout/delete icons), not just
+      // IconButton.filled. The chat send button gets its filled ink circle
+      // from Material 3's own default filled-variant styling, which already
+      // reads colorScheme.primary/onPrimary.
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: surface,
-        foregroundColor: primary,
-        elevation: 3,
-        shape: const CircleBorder(),
+        foregroundColor: ink,
+        elevation: 0,
+        shape: CircleBorder(side: BorderSide(color: line)),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: surface,
-        indicatorColor: primary.withValues(alpha: brightness == Brightness.dark ? 0.28 : 0.16),
+        indicatorColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
+        height: 64,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return TextStyle(
             fontSize: 12,
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            color: selected ? primary : muted,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+            color: selected ? ink : muted,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return IconThemeData(color: selected ? primary : muted);
+          return IconThemeData(color: selected ? ink : muted);
         }),
       ),
       dialogTheme: DialogThemeData(
@@ -220,16 +229,19 @@ class MinglaTheme {
         surfaceTintColor: Colors.transparent,
         titleTextStyle: textTheme.titleLarge,
         contentTextStyle: textTheme.bodyMedium,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: line),
+        ),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: ink,
         contentTextStyle: TextStyle(color: background),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       dividerTheme: DividerThemeData(color: line, space: 1),
-      progressIndicatorTheme: ProgressIndicatorThemeData(color: primary),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: ink),
     );
   }
 }
