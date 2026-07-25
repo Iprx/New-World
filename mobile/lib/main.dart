@@ -8,6 +8,7 @@ import 'services/auth_service.dart';
 import 'services/discovery_repository.dart';
 import 'services/matches_repository.dart';
 import 'services/profile_repository.dart';
+import 'theme.dart';
 
 void main() {
   runApp(const MinglaApp());
@@ -31,10 +32,9 @@ class MinglaApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Mingla',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorSchemeSeed: Colors.pinkAccent,
-          useMaterial3: true,
-        ),
+        theme: MinglaTheme.light,
+        darkTheme: MinglaTheme.dark,
+        themeMode: ThemeMode.system,
         home: const _RootScreen(),
       ),
     );

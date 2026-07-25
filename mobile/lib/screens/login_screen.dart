@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
+import '../widgets/mingla_mark.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -59,10 +60,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const Center(child: MinglaMark(size: 64)),
+                  const SizedBox(height: 20),
                   Text('Mingla', style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center),
-                  const SizedBox(height: 8),
-                  Text('Find your people.', style: Theme.of(context).textTheme.bodyMedium, textAlign: TextAlign.center),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Find your people.',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 40),
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(labelText: 'Email'),

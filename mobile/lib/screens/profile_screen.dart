@@ -92,6 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = context.watch<AuthService>().currentUser;
     if (user == null) return const SizedBox.shrink();
+    final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -99,19 +100,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             onPressed: () => context.read<AuthService>().logout(),
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout_rounded),
             tooltip: 'Log out',
           ),
+          const SizedBox(width: 4),
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
         children: [
           Text(user.name, style: Theme.of(context).textTheme.headlineSmall),
+          const SizedBox(height: 2),
           Text(user.email, style: Theme.of(context).textTheme.bodySmall),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
+          Text('Photos', style: Theme.of(context).textTheme.labelSmall),
+          const SizedBox(height: 8),
           SizedBox(
-            height: 120,
+            height: 130,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
@@ -121,20 +126,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Stack(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(16),
                           child: Image.network(
                             '$apiBaseUrl${photo.url}',
                             width: 100,
-                            height: 120,
+                            height: 130,
                             fit: BoxFit.cover,
                           ),
                         ),
                         Positioned(
-                          right: 0,
-                          top: 0,
-                          child: IconButton(
-                            icon: const Icon(Icons.cancel, color: Colors.black54),
-                            onPressed: () => _deletePhoto(photo.id),
+                          right: 6,
+                          top: 6,
+                          child: GestureDetector(
+                            onTap: () => _deletePhoto(photo.id),
+                            child: const CircleAvatar(
+                              radius: 13,
+                              backgroundColor: Colors.black54,
+                              child: Icon(Icons.close_rounded, size: 16, color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
@@ -143,24 +152,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(
                   width: 100,
-                  height: 120,
+                  height: 130,
                   child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: scheme.primary,
+                      side: BorderSide(color: scheme.primary.withValues(alpha: 0.4)),
+                    ),
                     onPressed: _uploadingPhoto ? null : _pickAndUploadPhoto,
                     child: _uploadingPhoto
-                        ? const CircularProgressIndicator()
-                        : const Icon(Icons.add_a_photo),
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: scheme.primary),
+                          )
+                        : const Icon(Icons.add_a_photo_rounded),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 28),
+          Text('Bio', style: Theme.of(context).textTheme.labelSmall),
+          const SizedBox(height: 8),
           TextField(
             controller: _bioController,
             maxLines: 4,
-            decoration: const InputDecoration(labelText: 'Bio'),
+            decoration: const InputDecoration(hintText: 'Tell people a little about yourself'),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           FilledButton(
             onPressed: _savingBio ? null : _saveBio,
             child: _savingBio

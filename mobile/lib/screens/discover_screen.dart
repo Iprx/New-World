@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/profile.dart';
 import '../services/api_client.dart';
 import '../services/discovery_repository.dart';
+import '../widgets/mingla_mark.dart';
 import '../widgets/profile_card.dart';
 
 class DiscoverScreen extends StatefulWidget {
@@ -59,10 +60,21 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("It's a match!"),
-        content: Text('You and ${profile.name} liked each other. Say hi in Matches.'),
+        title: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MinglaMark(size: 48),
+            SizedBox(height: 12),
+            Text("It's a match!"),
+          ],
+        ),
+        content: Text(
+          'You and ${profile.name} liked each other. Say hi in Matches.',
+          textAlign: TextAlign.center,
+        ),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Nice!')),
+          FilledButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Nice!')),
         ],
       ),
     );
@@ -87,22 +99,44 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       return ListView(
         children: [
           const SizedBox(height: 120),
-          Center(child: Text(_error!)),
+          Icon(Icons.wifi_off_rounded, size: 40, color: Theme.of(context).colorScheme.onSurfaceVariant),
           const SizedBox(height: 12),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Text(_error!, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
+            ),
+          ),
+          const SizedBox(height: 16),
           Center(child: OutlinedButton(onPressed: _load, child: const Text('Retry'))),
         ],
       );
     }
     if (_profiles.isEmpty) {
       return ListView(
-        children: const [
-          SizedBox(height: 120),
-          Center(child: Text("You're all caught up. Check back later!")),
+        children: [
+          const SizedBox(height: 100),
+          const Center(child: MinglaMark(size: 48)),
+          const SizedBox(height: 20),
+          Center(
+            child: Text(
+              "You're all caught up",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Center(
+            child: Text(
+              'Check back later for new people.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
         ],
       );
     }
 
     final top = _profiles.first;
+    final scheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -113,26 +147,30 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               direction: DismissDirection.horizontal,
               onDismissed: (direction) =>
                   _swipe(top, direction == DismissDirection.startToEnd),
-              background: _swipeHint(Icons.favorite, Colors.green, Alignment.centerLeft),
-              secondaryBackground: _swipeHint(Icons.close, Colors.red, Alignment.centerRight),
+              background: _swipeHint(Icons.favorite_rounded, scheme.primary, Alignment.centerLeft),
+              secondaryBackground:
+                  _swipeHint(Icons.close_rounded, scheme.onSurfaceVariant, Alignment.centerRight),
               child: ProfileCard(profile: top),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FloatingActionButton(
                 heroTag: 'pass',
-                backgroundColor: Colors.white,
+                elevation: 1,
                 onPressed: () => _swipe(top, false),
-                child: const Icon(Icons.close, color: Colors.red),
+                child: Icon(Icons.close_rounded, color: scheme.onSurfaceVariant, size: 28),
               ),
-              FloatingActionButton(
+              const SizedBox(width: 28),
+              FloatingActionButton.large(
                 heroTag: 'like',
-                backgroundColor: Colors.white,
+                backgroundColor: scheme.primary,
+                foregroundColor: scheme.onPrimary,
+                elevation: 2,
                 onPressed: () => _swipe(top, true),
-                child: const Icon(Icons.favorite, color: Colors.green),
+                child: const Icon(Icons.favorite_rounded, size: 30),
               ),
             ],
           ),
@@ -145,11 +183,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     return Container(
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
       ),
       alignment: alignment,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Icon(icon, color: color, size: 48),
+      padding: const EdgeInsets.symmetric(horizontal: 28),
+      child: Icon(icon, color: color, size: 44),
     );
   }
 }
