@@ -39,6 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
           );
     } on ApiException catch (e) {
       setState(() => _error = e.message);
+    } catch (_) {
+      setState(() => _error = 'Something went wrong. Please try again.');
     } finally {
       if (mounted) setState(() => _submitting = false);
     }

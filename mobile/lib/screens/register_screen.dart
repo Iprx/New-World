@@ -37,7 +37,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _pickBirthdate() async {
-    final eighteenYearsAgo = DateTime.now().subtract(const Duration(days: 365 * 18));
+    final now = DateTime.now();
+    // Calendar-exact 18-years-ago cutoff — a fixed `365 * 18` day count
+    // undercounts leap years and can suggest a birthdate the backend then
+    // rejects as under 18.
+    final eighteenYearsAgo = DateTime(now.year - 18, now.month, now.day);
     final picked = await showDatePicker(
       context: context,
       initialDate: eighteenYearsAgo,
@@ -73,8 +77,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             interestedIn: _interestedIn,
             bio: _bioController.text.trim(),
           );
+      // This screen was pushed on top of the login screen; now that
+      // AuthService reports us as signed in, pop back to reveal the home
+      // shell the root screen swaps in underneath.
+      if (mounted) Navigator.of(context).pop();
     } on ApiException catch (e) {
       setState(() => _error = e.message);
+    } catch (_) {
+      setState(() => _error = 'Something went wrong. Please try again.');
     } finally {
       if (mounted) setState(() => _submitting = false);
     }

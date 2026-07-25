@@ -35,44 +35,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _pickAndUploadPhoto() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 85);
-    if (picked == null) return;
+    if (picked == null || !mounted) return;
+
+    final profileRepo = context.read<ProfileRepository>();
+    final authService = context.read<AuthService>();
+    final messenger = ScaffoldMessenger.of(context);
 
     setState(() => _uploadingPhoto = true);
     try {
-      await context.read<ProfileRepository>().uploadPhoto(File(picked.path));
-      await context.read<AuthService>().refreshProfile();
+      await profileRepo.uploadPhoto(File(picked.path));
+      await authService.refreshProfile();
     } on ApiException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
-      }
+      messenger.showSnackBar(SnackBar(content: Text(e.message)));
+    } catch (_) {
+      messenger.showSnackBar(const SnackBar(content: Text('Something went wrong. Please try again.')));
     } finally {
       if (mounted) setState(() => _uploadingPhoto = false);
     }
   }
 
   Future<void> _deletePhoto(int photoId) async {
+    final profileRepo = context.read<ProfileRepository>();
+    final authService = context.read<AuthService>();
+    final messenger = ScaffoldMessenger.of(context);
+
     try {
-      await context.read<ProfileRepository>().deletePhoto(photoId);
-      await context.read<AuthService>().refreshProfile();
+      await profileRepo.deletePhoto(photoId);
+      await authService.refreshProfile();
     } on ApiException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
-      }
+      messenger.showSnackBar(SnackBar(content: Text(e.message)));
+    } catch (_) {
+      messenger.showSnackBar(const SnackBar(content: Text('Something went wrong. Please try again.')));
     }
   }
 
   Future<void> _saveBio() async {
+    final profileRepo = context.read<ProfileRepository>();
+    final authService = context.read<AuthService>();
+    final messenger = ScaffoldMessenger.of(context);
+
     setState(() => _savingBio = true);
     try {
-      await context.read<ProfileRepository>().updateProfile(bio: _bioController.text.trim());
-      await context.read<AuthService>().refreshProfile();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Bio updated')));
-      }
+      await profileRepo.updateProfile(bio: _bioController.text.trim());
+      await authService.refreshProfile();
+      messenger.showSnackBar(const SnackBar(content: Text('Bio updated')));
     } on ApiException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
-      }
+      messenger.showSnackBar(SnackBar(content: Text(e.message)));
+    } catch (_) {
+      messenger.showSnackBar(const SnackBar(content: Text('Something went wrong. Please try again.')));
     } finally {
       if (mounted) setState(() => _savingBio = false);
     }

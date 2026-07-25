@@ -21,14 +21,14 @@ class AuthService extends ChangeNotifier {
   bool get isAuthenticated => apiClient.token != null && currentUser != null;
 
   Future<void> bootstrap() async {
-    final savedToken = await _storage.read(key: _tokenKey);
-    if (savedToken != null) {
-      apiClient.token = savedToken;
-      try {
+    try {
+      final savedToken = await _storage.read(key: _tokenKey);
+      if (savedToken != null) {
+        apiClient.token = savedToken;
         await refreshProfile();
-      } catch (_) {
-        await _clearSession();
       }
+    } catch (_) {
+      await _clearSession();
     }
     isLoading = false;
     notifyListeners();
@@ -83,7 +83,12 @@ class AuthService extends ChangeNotifier {
   Future<void> _clearSession() async {
     apiClient.token = null;
     currentUser = null;
-    await _storage.delete(key: _tokenKey);
+    try {
+      await _storage.delete(key: _tokenKey);
+    } catch (_) {
+      // Clearing the in-memory session matters more than the persisted
+      // value; a broken secure-storage backend shouldn't block sign-out.
+    }
     notifyListeners();
   }
 }

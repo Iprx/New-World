@@ -144,7 +144,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   Widget _swipeHint(IconData icon, Color color, Alignment alignment) {
     return Container(
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(16),
       ),
       alignment: alignment,

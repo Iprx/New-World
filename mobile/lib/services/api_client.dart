@@ -40,8 +40,14 @@ class ApiClient {
     String message = 'Request failed (${response.statusCode})';
     try {
       final body = jsonDecode(response.body);
-      if (body is Map && body['detail'] != null) {
-        message = body['detail'].toString();
+      final detail = body is Map ? body['detail'] : null;
+      if (detail is String) {
+        message = detail;
+      } else if (detail is List && detail.isNotEmpty) {
+        // FastAPI/Pydantic validation errors: a list of {msg, loc, ...}.
+        message = detail
+            .map((e) => e is Map && e['msg'] != null ? e['msg'].toString() : e.toString())
+            .join('\n');
       }
     } catch (_) {
       // Response wasn't JSON; fall back to the generic message above.

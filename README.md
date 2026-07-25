@@ -38,7 +38,7 @@ pytest
 
 Flutter (iOS + Android) client: login/register, swipe-to-discover, matches list, chat, and profile/photo management.
 
-This repo ships the Dart source (`mobile/lib/`) and `pubspec.yaml` only — the native `android/` and `ios/` project folders aren't checked in, since generating them requires the Flutter SDK (not available in the environment this was built in). To get it running:
+This repo ships the Dart source (`mobile/lib/`, `mobile/test/`) and `pubspec.yaml`/`pubspec.lock` — the native `android/`, `ios/`, `linux/`, `macos/`, and `web/` project folders aren't checked in; `flutter create` regenerates them on demand. To get it running:
 
 ```bash
 cd mobile
@@ -47,11 +47,11 @@ flutter pub get
 flutter run --dart-define=API_BASE_URL=http://localhost:8000
 ```
 
-`flutter create .` scaffolds `android/` and `ios/` without touching the existing `lib/` or `pubspec.yaml`. After that:
+`flutter create .` scaffolds the platform folders without touching the existing `lib/`, `test/`, or `pubspec.yaml`. After that:
 
 - **iOS**: add `NSPhotoLibraryUsageDescription` to `ios/Runner/Info.plist` (required by `image_picker` for the profile-photo picker).
 - **Android**: on the emulator, `API_BASE_URL` defaults to `http://10.0.2.2:8000` automatically (see `lib/config.dart`) so it can reach a backend running on your host machine.
-- This code hasn't been run through `flutter analyze`/`flutter run` in this environment (no Flutter SDK installed here) — do that first after scaffolding, before relying on it.
+- `flutter analyze` and `flutter test` are clean, and the app has been run end-to-end (register → discover → swipe → matches → profile) against the live backend on Linux desktop — not just statically checked.
 
 ### Architecture
 
