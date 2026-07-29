@@ -11,10 +11,10 @@ class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
 
   @override
-  State<DiscoverScreen> createState() => _DiscoverScreenState();
+  State<DiscoverScreen> createState() => DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
+class DiscoverScreenState extends State<DiscoverScreen> {
   List<PublicProfile> _profiles = [];
   bool _loading = true;
   String? _error;
@@ -24,6 +24,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     super.initState();
     _load();
   }
+
+  /// Re-fetches the discover queue. Called by [HomeShell] when this tab is
+  /// re-selected, since the list is otherwise only loaded once.
+  Future<void> reload() => _load();
 
   Future<void> _load() async {
     setState(() {

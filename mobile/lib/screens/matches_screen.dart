@@ -12,10 +12,10 @@ class MatchesScreen extends StatefulWidget {
   const MatchesScreen({super.key});
 
   @override
-  State<MatchesScreen> createState() => _MatchesScreenState();
+  State<MatchesScreen> createState() => MatchesScreenState();
 }
 
-class _MatchesScreenState extends State<MatchesScreen> {
+class MatchesScreenState extends State<MatchesScreen> {
   List<MatchSummary> _matches = [];
   bool _loading = true;
   String? _error;
@@ -25,6 +25,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
     super.initState();
     _load();
   }
+
+  /// Re-fetches the match list. Called by [HomeShell] when this tab is
+  /// re-selected, since the list is otherwise only loaded once.
+  Future<void> reload() => _load();
 
   Future<void> _load() async {
     setState(() {
